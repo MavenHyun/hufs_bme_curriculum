@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUFS 바이오메디컬공학부 연구실 소개</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CSS VARIABLES & RESET
+   ============================================================ */
+:root {
+  --hufs-green: #146E7A;
+  --hufs-navy: #002D56;
+  --hufs-gold: #8D7150;
+  --hufs-gray: #DADAD3;
+  --hufs-silver: #9D9FA2;
+  --bg: #F5F5F2;
+  --card-bg: #FFFFFF;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --border: #E0E0DC;
+  --row-hover: #F8F8F6;
+}
+
+[data-theme="dark"] {
+  --bg: #121820;
+  --card-bg: #1A2332;
+  --text-primary: #E8E8E4;
+  --text-secondary: #A8A8A4;
+  --text-muted: #707070;
+  --border: #2A3444;
+  --row-hover: #1E2A3A;
+  --hufs-gray: #3A3A44;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.embed {
+  background: transparent;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.page-header {
+  background: var(--hufs-navy);
+  color: #FFFFFF;
+  padding: 28px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+body.embed .page-header {
+  position: relative;
+}
+
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.header-title h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.header-title .subtitle {
+  font-size: 12px;
+  font-weight: 300;
+  opacity: 0.75;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.main-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* ============================================================
+   LAB CARD
+   ============================================================ */
+.lab-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  display: flex;
+  transition: box-shadow 0.2s;
+}
+
+.lab-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .lab-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ---- Image column ---- */
+.lab-image {
+  flex: 0 0 360px;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--row-hover);
+  border-right: 1px solid var(--border);
+}
+
+.lab-image svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Info column ---- */
+.lab-info {
+  flex: 1;
+  padding: 24px 28px;
+  min-width: 0;
+}
+
+.lab-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--hufs-navy);
+  margin-bottom: 2px;
+}
+
+[data-theme="dark"] .lab-name {
+  color: #8BC4E8;
+}
+
+.lab-name-en {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.pi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(20, 110, 122, 0.08);
+  border: 1px solid rgba(20, 110, 122, 0.18);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--hufs-green);
+  margin-bottom: 14px;
+}
+
+[data-theme="dark"] .pi-badge {
+  background: rgba(20, 110, 122, 0.15);
+  border-color: rgba(20, 110, 122, 0.3);
+  color: #3ABBC8;
+}
+
+.pi-badge .position {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.lab-description {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+/* ---- Contact grid ---- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.contact-label {
+  flex-shrink: 0;
+  width: 52px;
+  font-weight: 600;
+  color: var(--hufs-silver);
+  letter-spacing: 0.2px;
+}
+
+.contact-value {
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.contact-value a {
+  color: var(--hufs-green);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.contact-value a:hover {
+  opacity: 0.75;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.page-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.page-footer a {
+  color: var(--hufs-green);
+  text-decoration: none;
+}
+
+body.embed .page-footer {
+  display: none;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 20px 16px;
+  }
+
+  .lab-card {
+    flex-direction: column;
+  }
+
+  .lab-image {
+    flex: none;
+    min-height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lab-info {
+    padding: 20px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title h1 {
+    font-size: 16px;
+  }
+
+  .lab-name {
+    font-size: 16px;
+  }
+
+  .lab-image {
+    min-height: 160px;
+  }
+
+  .lab-info {
+    padding: 16px;
+  }
+
+  .lab-description {
+    font-size: 13px;
+  }
+}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  .page-header {
+    position: relative;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .lab-card {
+    break-inside: avoid;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="page-header" id="page-header">
+  <div class="header-inner">
+    <div class="header-title">
+      <h1>바이오메디컬공학부 연구실 소개</h1>
+      <span class="subtitle">Department of Biomedical Engineering — Research Labs</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main class="main-content" id="main-content"></main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer">
+  한국외국어대학교 바이오메디컬공학부 &middot;
+  <a href="https://bme.hufs.ac.kr" target="_blank" rel="noopener">bme.hufs.ac.kr</a>
+</footer>
+
+<script>
+// ============================================================
+// LAB DATA
+// ============================================================
+const LABS = [
+  {
+    piName: "김보형",
+    piNameEn: "Kim Bo-Hyung",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "bkim@hufs.ac.kr",
+    phone: "031-330-4857",
+    office: "백년관 901",
+    labLocation: "백년관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  },
+  {
+    piName: "오세홍",
+    piNameEn: "Oh Se-Hong",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "ohs@hufs.ac.kr",
+    phone: "031-330-4592",
+    office: "백년관 902",
+    labLocation: "백년관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  },
+  {
+    piName: "고윤희",
+    piNameEn: "Ko Yun-Hee",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "younko@hufs.ac.kr",
+    phone: "031-330-4467",
+    office: "백년관 903",
+    labLocation: "백년관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  },
+  {
+    piName: "남윤호",
+    piNameEn: "Nam Yoon-Ho",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "yoonhonam@hufs.ac.kr",
+    phone: "031-330-4627",
+    office: "백년관 904",
+    labLocation: "백년관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  },
+  {
+    piName: "우명균",
+    piNameEn: "Woo Myung-Gyun",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "mkwoo@hufs.ac.kr",
+    phone: "031-330-4431",
+    office: "백년관 916",
+    labLocation: "백년관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  },
+  {
+    piName: "김모건",
+    piNameEn: "Kim Mo-Gun",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "gimmogan@hufs.ac.kr",
+    phone: "031-330-4751",
+    office: "공학관 513",
+    labLocation: "공학관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  },
+  {
+    piName: "강교원",
+    piNameEn: "Kang Kyowon",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "kyowonkang@hufs.ac.kr",
+    phone: "031-330-4678",
+    office: "백년관 704",
+    labLocation: "백년관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  },
+  {
+    piName: "박준홍",
+    piNameEn: "Park Jun-Hong",
+    position: "교수",
+    labName: "연구실명 (미정)",
+    labNameEn: "Lab Name TBD",
+    email: "junhong.park@hufs.ac.kr",
+    phone: "031-330-4497",
+    office: "백년관 917",
+    labLocation: "백년관 (미정)",
+    homepage: "",
+    description: "연구실 소개가 아직 등록되지 않았습니다. 추후 업데이트될 예정입니다."
+  }
+];
+
+// ============================================================
+// RENDER
+// ============================================================
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function placeholderSVG() {
+  return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <rect width="400" height="260" fill="none"/>
+    <g transform="translate(200,110)">
+      <rect x="-30" y="-22" width="60" height="44" rx="6" fill="none" stroke="#B0B0A8" stroke-width="2.5"/>
+      <circle cx="0" cy="-2" r="10" fill="none" stroke="#B0B0A8" stroke-width="2"/>
+      <path d="M-22 16 L-10 4 L0 12 L12 -2 L22 8 L22 16Z" fill="#B0B0A8" opacity="0.35"/>
+      <circle cx="14" cy="-10" r="4" fill="#B0B0A8" opacity="0.4"/>
+    </g>
+    <text x="200" y="175" text-anchor="middle" font-family="'Noto Sans KR', sans-serif" font-size="13" font-weight="500" fill="#B0B0A8">Lab Photo</text>
+  </svg>`;
+}
+
+function renderLab(lab) {
+  const homepageRow = lab.homepage
+    ? `<div class="contact-item">
+        <span class="contact-label">홈페이지</span>
+        <span class="contact-value"><a href="${escapeHtml(lab.homepage)}" target="_blank" rel="noopener">${escapeHtml(lab.homepage)}</a></span>
+      </div>`
+    : `<div class="contact-item">
+        <span class="contact-label">홈페이지</span>
+        <span class="contact-value" style="color:var(--text-muted);">미정</span>
+      </div>`;
+
+  return `<section class="lab-card">
+    <div class="lab-image">
+      ${placeholderSVG()}
+    </div>
+    <div class="lab-info">
+      <h2 class="lab-name">${escapeHtml(lab.labName)}</h2>
+      <div class="lab-name-en">${escapeHtml(lab.labNameEn)}</div>
+      <div class="pi-badge">
+        ${escapeHtml(lab.piName)} (${escapeHtml(lab.piNameEn)})
+        <span class="position">${escapeHtml(lab.position)}</span>
+      </div>
+      <p class="lab-description">${escapeHtml(lab.description)}</p>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <span class="contact-label">이메일</span>
+          <span class="contact-value"><a href="mailto:${escapeHtml(lab.email)}">${escapeHtml(lab.email)}</a></span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">전화</span>
+          <span class="contact-value"><a href="tel:${escapeHtml(lab.phone)}">${escapeHtml(lab.phone)}</a></span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">연구실</span>
+          <span class="contact-value">${escapeHtml(lab.office)}</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">실험실</span>
+          <span class="contact-value">${escapeHtml(lab.labLocation)}</span>
+        </div>
+        ${homepageRow}
+      </div>
+    </div>
+  </section>`;
+}
+
+function render() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = LABS.map(renderLab).join('');
+}
+
+// ============================================================
+// QUERY PARAMS: ?embed=true, ?theme=dark
+// ============================================================
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('embed') === 'true' || window.parent !== window) {
+    document.body.classList.add('embed');
+  }
+
+  if (params.get('theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
