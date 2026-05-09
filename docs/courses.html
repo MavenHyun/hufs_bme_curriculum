@@ -387,6 +387,127 @@ body.embed .page-header {
 }
 
 /* ============================================================
+   TOOLTIP
+   ============================================================ */
+.course-tooltip {
+  position: fixed;
+  z-index: 200;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  padding: 16px;
+  width: 300px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.course-tooltip.visible {
+  opacity: 1;
+}
+
+[data-theme="dark"] .course-tooltip {
+  background: #1E2A3A;
+  border-color: #3A4A5A;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.tip-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tip-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--hufs-gray);
+  flex-shrink: 0;
+}
+
+.tip-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.tip-name-en {
+  font-size: 10.5px;
+  font-weight: 300;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.tip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  margin-bottom: 8px;
+}
+
+.tip-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.tip-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--hufs-silver);
+  letter-spacing: 0.3px;
+}
+
+.tip-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tip-prereqs {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.tip-prereq-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--hufs-silver);
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+
+.tip-prereq-item {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding: 1px 0;
+}
+
+.tip-prereq-item::before {
+  content: '  ';
+  margin-right: 4px;
+}
+
+.tip-prereq-item.required::before {
+  content: '';
+  color: #E05050;
+}
+
+.tip-prereq-item.recommended::before {
+  content: '';
+  color: var(--hufs-silver);
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .page-footer {
@@ -548,62 +669,62 @@ body.embed .page-footer {
 // ============================================================
 const COURSES = [
   // ---- Year 1, Semester 1 ----
-  { name:"AI공학개론", nameEn:"Introduction to Artificial Intelligence Engineering", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"남윤호 교수님" },
-  { name:"컴퓨터개론 및 실습", nameEn:"Introduction to Computer & Experiments", credits:3, year:1, semester:1, track:"공통", hasLab:true, majorRequired:false, professor:"김보형 교수님" },
-  { name:"기본미적분학1", nameEn:"Basic Calculus 1", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
-  { name:"일반화학", nameEn:"General Chemistry", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
-  { name:"일반생물학1", nameEn:"General Biology 1", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
-  { name:"기초물리학1", nameEn:"Basic Physics 1", credits:2, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"AI공학개론", nameEn:"Introduction to Artificial Intelligence Engineering", credits:3, year:1, semester:1, track:"공통", classification:"BME기초공학", category:"공학기초", hasLab:false, majorRequired:false, professor:"남윤호 교수님", recPrereqs:[], reqPrereqs:[] },
+  { name:"컴퓨터개론 및 실습", nameEn:"Introduction to Computer & Experiments", credits:3, year:1, semester:1, track:"공통", classification:"BME기초공학", category:"전공", hasLab:true, majorRequired:false, professor:"김보형 교수님", recPrereqs:[], reqPrereqs:[] },
+  { name:"기본미적분학1", nameEn:"Basic Calculus 1", credits:3, year:1, semester:1, track:"공통", classification:"BME기초수학", category:"교양", hasLab:false, majorRequired:false, professor:"", recPrereqs:[], reqPrereqs:[] },
+  { name:"일반화학", nameEn:"General Chemistry", credits:3, year:1, semester:1, track:"공통", classification:"BME기초과학", category:"교양", hasLab:false, majorRequired:false, professor:"", recPrereqs:[], reqPrereqs:[] },
+  { name:"일반생물학1", nameEn:"General Biology 1", credits:3, year:1, semester:1, track:"공통", classification:"BME기초과학", category:"전공", hasLab:false, majorRequired:false, professor:"", recPrereqs:[], reqPrereqs:[] },
+  { name:"기초물리학1", nameEn:"Basic Physics 1", credits:2, year:1, semester:1, track:"공통", classification:"BME기초과학", category:"전공", hasLab:false, majorRequired:false, professor:"", recPrereqs:[], reqPrereqs:[] },
   // ---- Year 1, Semester 2 ----
-  { name:"디지털공학", nameEn:"Digital Engineering", credits:3, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"오세홍 교수님" },
-  { name:"컴퓨터프로그래밍 및 실습", nameEn:"Computer Programming & Lab", credits:3, year:1, semester:2, track:"공통", hasLab:true, majorRequired:true, professor:"김보형 교수님" },
-  { name:"기본미적분학2", nameEn:"Basic Calculus 2", credits:3, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
-  { name:"일반생물학2", nameEn:"General Biology 2", credits:3, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
-  { name:"기초물리학2", nameEn:"Basic Physics 2", credits:2, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"디지털공학", nameEn:"Digital Engineering", credits:3, year:1, semester:2, track:"공통", classification:"BME기초공학", category:"전공", hasLab:false, majorRequired:false, professor:"오세홍 교수님", recPrereqs:["컴퓨터개론 및 실습","AI공학개론"], reqPrereqs:[] },
+  { name:"컴퓨터프로그래밍 및 실습", nameEn:"Computer Programming & Lab", credits:3, year:1, semester:2, track:"공통", classification:"BME기초공학", category:"공학기초", hasLab:true, majorRequired:true, professor:"김보형 교수님", recPrereqs:["컴퓨터개론 및 실습","AI공학개론"], reqPrereqs:[] },
+  { name:"기본미적분학2", nameEn:"Basic Calculus 2", credits:3, year:1, semester:2, track:"공통", classification:"BME기초수학", category:"교양", hasLab:false, majorRequired:false, professor:"", recPrereqs:[], reqPrereqs:["기본미적분학1"] },
+  { name:"일반생물학2", nameEn:"General Biology 2", credits:3, year:1, semester:2, track:"공통", classification:"BME기초과학", category:"전공", hasLab:false, majorRequired:false, professor:"", recPrereqs:[], reqPrereqs:["일반생물학1"] },
+  { name:"기초물리학2", nameEn:"Basic Physics 2", credits:2, year:1, semester:2, track:"공통", classification:"BME기초과학", category:"전공", hasLab:false, majorRequired:false, professor:"", recPrereqs:["기초물리학1"], reqPrereqs:[] },
   // ---- Year 2, Semester 1 ----
-  { name:"공업수학1", nameEn:"Engineering Mathematics 1", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:true, professor:"우명균 교수님" },
-  { name:"의용회로", nameEn:"BME Circuit Analysis & Laboratory", credits:3, year:2, semester:1, track:"공통", hasLab:true, majorRequired:true, professor:"오세홍 교수님" },
-  { name:"의용기계공학", nameEn:"Biomedical Mechanics", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:true, professor:"박준홍 교수님" },
-  { name:"객체지향프로그래밍", nameEn:"Object-Oriented Programming & Laboratory", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"김보형 교수님" },
-  { name:"바이오확률통계", nameEn:"Biomedical Probability & Statistics", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
-  { name:"미생물학", nameEn:"Microbiology", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"공업수학1", nameEn:"Engineering Mathematics 1", credits:3, year:2, semester:1, track:"공통", classification:"BME기초수학", category:"공학기초", hasLab:false, majorRequired:true, professor:"우명균 교수님", recPrereqs:["기본미적분학2"], reqPrereqs:[] },
+  { name:"의용회로", nameEn:"BME Circuit Analysis & Laboratory", credits:3, year:2, semester:1, track:"공통", classification:"BME기초공학", category:"전공", hasLab:true, majorRequired:true, professor:"오세홍 교수님", recPrereqs:["디지털공학"], reqPrereqs:[] },
+  { name:"의용기계공학", nameEn:"Biomedical Mechanics", credits:3, year:2, semester:1, track:"공통", classification:"BME기초공학", category:"전공", hasLab:false, majorRequired:true, professor:"박준홍 교수님", recPrereqs:["디지털공학"], reqPrereqs:[] },
+  { name:"객체지향프로그래밍", nameEn:"Object-Oriented Programming & Laboratory", credits:3, year:2, semester:1, track:"공통", classification:"BME기초공학", category:"전공", hasLab:false, majorRequired:false, professor:"김보형 교수님", recPrereqs:["컴퓨터프로그래밍 및 실습"], reqPrereqs:[] },
+  { name:"바이오확률통계", nameEn:"Biomedical Probability & Statistics", credits:3, year:2, semester:1, track:"공통", classification:"BME기초수학", category:"전공", hasLab:false, majorRequired:false, professor:"", recPrereqs:["기본미적분학2"], reqPrereqs:[] },
+  { name:"미생물학", nameEn:"Microbiology", credits:3, year:2, semester:1, track:"공통", classification:"BME기초과학", category:"전공", hasLab:false, majorRequired:false, professor:"", recPrereqs:["일반생물학2"], reqPrereqs:[] },
   // ---- Year 2, Semester 2 ----
-  { name:"의용반도체 회로 및 실습", nameEn:"Biomedical Semiconductor Circuits and Experiment", credits:3, year:2, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"강교원 교수님" },
-  { name:"의용전자", nameEn:"BME Electronic Circuit Design & Laboratory", credits:3, year:2, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"오세홍 교수님" },
-  { name:"의용열유체", nameEn:"Biomedical Thermo-Fluid Mechanics", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
-  { name:"선형대수", nameEn:"Linear Algebra", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:true, professor:"남윤호 교수님" },
-  { name:"자료구조", nameEn:"Data Structure", credits:3, year:2, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"김보형 교수님" },
-  { name:"의학유전학 (의생명데이터프로그래밍)", nameEn:"Medical Genetics (Biomedical Data Programming)", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
-  { name:"생체구조생리학", nameEn:"Human Physiology", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"의용반도체 회로 및 실습", nameEn:"Biomedical Semiconductor Circuits and Experiment", credits:3, year:2, semester:2, track:"공통", classification:"BME기초공학", category:"전공", hasLab:true, majorRequired:false, professor:"강교원 교수님", recPrereqs:["의용회로"], reqPrereqs:[] },
+  { name:"의용전자", nameEn:"BME Electronic Circuit Design & Laboratory", credits:3, year:2, semester:2, track:"공통", classification:"BME기초공학", category:"전공", hasLab:true, majorRequired:false, professor:"오세홍 교수님", recPrereqs:[], reqPrereqs:["의용회로"] },
+  { name:"의용열유체", nameEn:"Biomedical Thermo-Fluid Mechanics", credits:3, year:2, semester:2, track:"공통", classification:"BME기초공학", category:"전공", hasLab:false, majorRequired:false, professor:"박준홍 교수님", recPrereqs:["의용기계공학"], reqPrereqs:[] },
+  { name:"선형대수", nameEn:"Linear Algebra", credits:3, year:2, semester:2, track:"공통", classification:"BME기초수학", category:"전공", hasLab:false, majorRequired:true, professor:"남윤호 교수님", recPrereqs:["바이오확률통계","공업수학1"], reqPrereqs:[] },
+  { name:"자료구조", nameEn:"Data Structure", credits:3, year:2, semester:2, track:"공통", classification:"BME기초공학", category:"전공", hasLab:true, majorRequired:false, professor:"김보형 교수님", recPrereqs:[], reqPrereqs:["객체지향프로그래밍"] },
+  { name:"의학유전학 (의생명데이터프로그래밍)", nameEn:"Medical Genetics (Biomedical Data Programming)", credits:3, year:2, semester:2, track:"공통", classification:"BME기초공학", category:"전공", hasLab:false, majorRequired:false, professor:"고윤희 교수님", recPrereqs:["미생물학"], reqPrereqs:["바이오확률통계"] },
+  { name:"생체구조생리학", nameEn:"Human Physiology", credits:3, year:2, semester:2, track:"공통", classification:"BME기초과학", category:"전공", hasLab:false, majorRequired:false, professor:"", recPrereqs:["미생물학"], reqPrereqs:[] },
   // ---- Year 3, Semester 1 ----
-  { name:"바이오메디컬 인공지능", nameEn:"Biomedical Artificial Intelligence", credits:3, year:3, semester:1, track:"데이터", hasLab:false, majorRequired:false, professor:"김모건 교수님" },
-  { name:"화학정보학", nameEn:"Cheminformatics", credits:3, year:3, semester:1, track:"데이터", hasLab:true, majorRequired:false, professor:"김모건 교수님" },
-  { name:"BME 신호 및 시스템", nameEn:"BME Signal and System", credits:3, year:3, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"오세홍 교수님" },
-  { name:"의료초음파입문", nameEn:"Introduction to Medical Ultrasound", credits:3, year:3, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
-  { name:"생명정보학을 위한 데이터마이닝", nameEn:"Data mining in Bioinformatics", credits:3, year:3, semester:1, track:"데이터", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
-  { name:"의용반도체 공정 및 실습", nameEn:"Biomedical Semiconductor Fabrication and Experiment", credits:3, year:3, semester:1, track:"시스템", hasLab:true, majorRequired:false, professor:"강교원 교수님" },
-  { name:"웨어러블/임플란터블 디바이스특론", nameEn:"Special topics on wearable/implantable devcies", credits:3, year:3, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"강교원 교수님" },
+  { name:"바이오메디컬 인공지능", nameEn:"Biomedical Artificial Intelligence", credits:3, year:3, semester:1, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"김모건 교수님", recPrereqs:[], reqPrereqs:["바이오확률통계","선형대수","자료구조"] },
+  { name:"화학정보학", nameEn:"Cheminformatics", credits:3, year:3, semester:1, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"김모건 교수님", recPrereqs:["일반화학"], reqPrereqs:[] },
+  { name:"BME 신호 및 시스템", nameEn:"BME Signal and System", credits:3, year:3, semester:1, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"오세홍 교수님", recPrereqs:["공업수학1"], reqPrereqs:[] },
+  { name:"의료초음파입문", nameEn:"Introduction to Medical Ultrasound", credits:3, year:3, semester:1, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"박준홍 교수님", recPrereqs:["의용열유체"], reqPrereqs:[] },
+  { name:"생명정보학을 위한 데이터마이닝", nameEn:"Data mining in Bioinformatics", credits:3, year:3, semester:1, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"고윤희 교수님", recPrereqs:[], reqPrereqs:["의학유전학 (의생명데이터프로그래밍)","자료구조"] },
+  { name:"의용반도체 공정 및 실습", nameEn:"Biomedical Semiconductor Fabrication and Experiment", credits:3, year:3, semester:1, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"강교원 교수님", recPrereqs:[], reqPrereqs:["의용반도체 회로 및 실습"] },
+  { name:"웨어러블/임플란터블 디바이스특론", nameEn:"Special topics on wearable/implantable devcies", credits:3, year:3, semester:1, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"강교원 교수님", recPrereqs:[], reqPrereqs:[] },
   // ---- Year 3, Semester 2 ----
-  { name:"의생명 자연어처리", nameEn:"Biomedical Natural Language Processing", credits:3, year:3, semester:2, track:"데이터", hasLab:true, majorRequired:false, professor:"김모건 교수님" },
-  { name:"RF 및 Wireless 시스템", nameEn:"RF and Wireless System", credits:3, year:3, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
-  { name:"생체전자기학", nameEn:"Bioelectromagnetism", credits:3, year:3, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
-  { name:"BME 캡스톤기초", nameEn:"Lab for BME Basic Capstone", credits:1, year:3, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"우명균 교수님" },
-  { name:"바이오메디컬공학 최신경향과 창의설계", nameEn:"Trends in Biomedical Engineering and Creative Design", credits:3, year:3, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"우명균 교수님" },
-  { name:"의료영상물리학", nameEn:"The Physics of Medical Imaging", credits:3, year:3, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
-  { name:"의료영상처리이론 및 실습", nameEn:"Medical Image Processing & Laboratory", credits:3, year:3, semester:2, track:"시스템", hasLab:true, majorRequired:false, professor:"남윤호 교수님" },
-  { name:"의생명정보학", nameEn:"Bioinformatics", credits:3, year:3, semester:2, track:"데이터", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
-  { name:"바이오메디컬 회로 설계 및 실험", nameEn:"Biomedical circuit design and experiments", credits:3, year:3, semester:2, track:"시스템", hasLab:true, majorRequired:false, professor:"강교원 교수님" },
+  { name:"의생명 자연어처리", nameEn:"Biomedical Natural Language Processing", credits:3, year:3, semester:2, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"김모건 교수님", recPrereqs:[], reqPrereqs:["바이오메디컬 인공지능"] },
+  { name:"RF 및 Wireless 시스템", nameEn:"RF and Wireless System", credits:3, year:3, semester:2, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"우명균 교수님", recPrereqs:[], reqPrereqs:[] },
+  { name:"생체전자기학", nameEn:"Bioelectromagnetism", credits:3, year:3, semester:2, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"우명균 교수님", recPrereqs:[], reqPrereqs:["공업수학1"] },
+  { name:"BME 캡스톤기초", nameEn:"Lab for BME Basic Capstone", credits:1, year:3, semester:2, track:"공통", classification:"BME전공완성", category:"전공", hasLab:true, majorRequired:false, professor:"우명균 교수님", recPrereqs:[], reqPrereqs:[] },
+  { name:"바이오메디컬공학 최신경향과 창의설계", nameEn:"Trends in Biomedical Engineering and Creative Design", credits:3, year:3, semester:2, track:"공통", classification:"BME전공완성", category:"전공", hasLab:true, majorRequired:false, professor:"우명균 교수님", recPrereqs:[], reqPrereqs:[] },
+  { name:"의료영상물리학", nameEn:"The Physics of Medical Imaging", credits:3, year:3, semester:2, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"우명균 교수님", recPrereqs:["기초물리학1","공업수학1"], reqPrereqs:[] },
+  { name:"의료영상처리이론 및 실습", nameEn:"Medical Image Processing & Laboratory", credits:3, year:3, semester:2, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"남윤호 교수님", recPrereqs:["바이오메디컬 인공지능","선형대수"], reqPrereqs:["BME 신호 및 시스템"] },
+  { name:"의생명정보학", nameEn:"Bioinformatics", credits:3, year:3, semester:2, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"고윤희 교수님", recPrereqs:[], reqPrereqs:["생명정보학을 위한 데이터마이닝"] },
+  { name:"바이오메디컬 회로 설계 및 실험", nameEn:"Biomedical circuit design and experiments", credits:3, year:3, semester:2, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"강교원 교수님", recPrereqs:["의용반도체 공정 및 실습"], reqPrereqs:[] },
   // ---- Year 4, Semester 1 ----
-  { name:"BME 캡스톤디자인실습", nameEn:"Lab for BME Capstone Design", credits:3, year:4, semester:1, track:"공통", hasLab:true, majorRequired:false, professor:"학부장 교수님" },
-  { name:"안테나공학이론", nameEn:"Antenna Engineering Theory", credits:3, year:4, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
-  { name:"고급의료영상처리 및 실습", nameEn:"Advanced Medical Image Processing & Laboratory", credits:3, year:4, semester:1, track:"시스템", hasLab:true, majorRequired:false, professor:"남윤호 교수님" },
+  { name:"BME 캡스톤디자인실습", nameEn:"Lab for BME Capstone Design", credits:3, year:4, semester:1, track:"공통", classification:"BME전공완성", category:"전공", hasLab:true, majorRequired:false, professor:"학부장 교수님", recPrereqs:["BME 캡스톤기초"], reqPrereqs:[] },
+  { name:"안테나공학이론", nameEn:"Antenna Engineering Theory", credits:3, year:4, semester:1, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"우명균 교수님", recPrereqs:[], reqPrereqs:["RF 및 Wireless 시스템"] },
+  { name:"고급의료영상처리 및 실습", nameEn:"Advanced Medical Image Processing & Laboratory", credits:3, year:4, semester:1, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"남윤호 교수님", recPrereqs:["바이오메디컬 인공지능"], reqPrereqs:["의료영상처리이론 및 실습","BME 신호 및 시스템"] },
   // ---- Year 4, Semester 2 ----
-  { name:"신약개발", nameEn:"Drug Discovery", credits:3, year:4, semester:2, track:"데이터", hasLab:true, majorRequired:false, professor:"김모건 교수님" },
-  { name:"MRI이론", nameEn:"Magnetic Resonance Imaging Theory", credits:3, year:4, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
-  { name:"바이오음향공학", nameEn:"Bioacoustic Engineering", credits:3, year:4, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
-  { name:"바이오메디컬공학특강", nameEn:"Special Lectures on Biomedical Engineering Seminar", credits:2, year:4, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
-  { name:"데이터시각화 및 실습", nameEn:"Data Visualization & Laboratory", credits:3, year:4, semester:2, track:"데이터", hasLab:true, majorRequired:false, professor:"김보형 교수님" },
-  { name:"의생명데이터분석", nameEn:"NGS Data Analysis", credits:3, year:4, semester:2, track:"데이터", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
+  { name:"신약개발", nameEn:"Drug Discovery", credits:3, year:4, semester:2, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"김모건 교수님", recPrereqs:["의생명정보학"], reqPrereqs:["바이오메디컬 인공지능","화학정보학"] },
+  { name:"MRI이론", nameEn:"Magnetic Resonance Imaging Theory", credits:3, year:4, semester:2, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"우명균 교수님", recPrereqs:[], reqPrereqs:["안테나공학이론"] },
+  { name:"바이오음향공학", nameEn:"Bioacoustic Engineering", credits:3, year:4, semester:2, track:"시스템", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"박준홍 교수님", recPrereqs:[], reqPrereqs:["의료초음파입문","선형대수"] },
+  { name:"바이오메디컬공학특강", nameEn:"Special Lectures on Biomedical Engineering Seminar", credits:2, year:4, semester:2, track:"공통", classification:"BME전공완성", category:"전공", hasLab:false, majorRequired:false, professor:"박준홍 교수님", recPrereqs:["바이오메디컬공학 최신경향과 창의설계"], reqPrereqs:[] },
+  { name:"데이터시각화 및 실습", nameEn:"Data Visualization & Laboratory", credits:3, year:4, semester:2, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:true, majorRequired:false, professor:"김보형 교수님", recPrereqs:["자료구조","공업수학1"], reqPrereqs:[] },
+  { name:"의생명데이터분석", nameEn:"NGS Data Analysis", credits:3, year:4, semester:2, track:"데이터", classification:"BME전공특화", category:"전공", hasLab:false, majorRequired:false, professor:"고윤희 교수님", recPrereqs:[], reqPrereqs:["의생명정보학"] },
 ];
 
 // ============================================================
@@ -629,12 +750,15 @@ function escapeHtml(str) {
 // ============================================================
 // RENDER
 // ============================================================
+const courseMap = new Map();
+COURSES.forEach(c => courseMap.set(c.name, c));
+
 function renderCourseRow(c) {
   const tags = [];
   if (c.majorRequired) tags.push('<span class="tag tag-required">필수</span>');
   if (c.hasLab) tags.push('<span class="tag tag-lab">실습</span>');
 
-  return `<tr class="course-row ${trackClass(c.track)}">
+  return `<tr class="course-row ${trackClass(c.track)}" data-course="${escapeHtml(c.name)}">
     <td><img class="course-icon" src="${getIconPath(c.name)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"></td>
     <td class="td-name">
       <div class="course-name-kr">${escapeHtml(c.name)}</div>
@@ -708,7 +832,111 @@ function render() {
   }
 
   render();
+  initTooltip();
 })();
+
+// ============================================================
+// TOOLTIP
+// ============================================================
+function initTooltip() {
+  const tip = document.createElement('div');
+  tip.className = 'course-tooltip';
+  tip.id = 'course-tooltip';
+  document.body.appendChild(tip);
+
+  let hideTimer = null;
+
+  function getTrackColor(track) {
+    if (track === '시스템') return 'var(--hufs-gold)';
+    if (track === '데이터') return 'var(--hufs-data-blue)';
+    return 'var(--hufs-green)';
+  }
+
+  function showTip(row, course) {
+    clearTimeout(hideTimer);
+    let prereqsHTML = '';
+    const hasReq = course.reqPrereqs && course.reqPrereqs.length > 0;
+    const hasRec = course.recPrereqs && course.recPrereqs.length > 0;
+    if (hasReq || hasRec) {
+      prereqsHTML = '<div class="tip-prereqs">';
+      if (hasReq) {
+        prereqsHTML += '<div class="tip-prereq-title">필수 선수과목</div>';
+        course.reqPrereqs.forEach(p => {
+          prereqsHTML += '<div class="tip-prereq-item required">' + escapeHtml(p) + '</div>';
+        });
+      }
+      if (hasRec) {
+        prereqsHTML += '<div class="tip-prereq-title" style="margin-top:4px">권장 선수과목</div>';
+        course.recPrereqs.forEach(p => {
+          prereqsHTML += '<div class="tip-prereq-item recommended">' + escapeHtml(p) + '</div>';
+        });
+      }
+      prereqsHTML += '</div>';
+    }
+
+    tip.innerHTML = `
+      <div class="tip-header">
+        <img class="tip-icon" src="${getIconPath(course.name)}" alt="" onerror="this.style.display='none'">
+        <div>
+          <div class="tip-name">${escapeHtml(course.name)}</div>
+          <div class="tip-name-en">${escapeHtml(course.nameEn)}</div>
+        </div>
+      </div>
+      <div class="tip-grid">
+        <div class="tip-field"><span class="tip-label">학점</span><span class="tip-value">${course.credits}</span></div>
+        <div class="tip-field"><span class="tip-label">트랙</span><span class="tip-value" style="color:${getTrackColor(course.track)}">${course.track}</span></div>
+        <div class="tip-field"><span class="tip-label">분류</span><span class="tip-value">${course.classification}</span></div>
+        <div class="tip-field"><span class="tip-label">영역</span><span class="tip-value">${course.category}</span></div>
+        ${course.professor ? '<div class="tip-field"><span class="tip-label">교수</span><span class="tip-value">' + escapeHtml(course.professor) + '</span></div>' : ''}
+        ${course.hasLab ? '<div class="tip-field"><span class="tip-label">실습</span><span class="tip-value" style="color:#2dd4bf">포함</span></div>' : ''}
+        ${course.majorRequired ? '<div class="tip-field"><span class="tip-label">전공필수</span><span class="tip-value" style="color:#f87171">필수</span></div>' : ''}
+      </div>
+      ${prereqsHTML}`;
+
+    const rect = row.getBoundingClientRect();
+    const tipW = 300;
+    let left = rect.right + 8;
+    let top = rect.top;
+
+    if (left + tipW > window.innerWidth) {
+      left = rect.left - tipW - 8;
+    }
+    if (left < 0) {
+      left = rect.left;
+      top = rect.bottom + 4;
+    }
+    if (top + tip.offsetHeight > window.innerHeight) {
+      top = window.innerHeight - tip.offsetHeight - 8;
+    }
+    if (top < 0) top = 8;
+
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+    tip.classList.add('visible');
+  }
+
+  function hideTip() {
+    hideTimer = setTimeout(() => {
+      tip.classList.remove('visible');
+    }, 80);
+  }
+
+  document.getElementById('main-content').addEventListener('mouseover', function(e) {
+    const row = e.target.closest('.course-row');
+    if (!row) return;
+    const name = row.getAttribute('data-course');
+    const course = courseMap.get(name);
+    if (course) showTip(row, course);
+  });
+
+  document.getElementById('main-content').addEventListener('mouseout', function(e) {
+    const row = e.target.closest('.course-row');
+    if (!row) return;
+    const related = e.relatedTarget;
+    if (related && row.contains(related)) return;
+    hideTip();
+  });
+}
 </script>
 </body>
 </html>
