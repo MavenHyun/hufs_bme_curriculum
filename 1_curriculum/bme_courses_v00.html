@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUFS 바이오메디컬공학부 교육과정</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CSS VARIABLES & RESET
+   ============================================================ */
+:root {
+  --hufs-green: #146E7A;
+  --hufs-navy: #002D56;
+  --hufs-gold: #8D7150;
+  --hufs-gray: #DADAD3;
+  --hufs-silver: #9D9FA2;
+  --hufs-data-blue: #2E6EA6;
+  --bg: #F5F5F2;
+  --card-bg: #FFFFFF;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --border: #E0E0DC;
+  --row-hover: #F8F8F6;
+  --tag-required-bg: #E8F0F2;
+  --tag-required-text: #146E7A;
+  --tag-lab-bg: #FFF3E6;
+  --tag-lab-text: #8D7150;
+}
+
+[data-theme="dark"] {
+  --bg: #121820;
+  --card-bg: #1A2332;
+  --text-primary: #E8E8E4;
+  --text-secondary: #A8A8A4;
+  --text-muted: #707070;
+  --border: #2A3444;
+  --row-hover: #1E2A3A;
+  --tag-required-bg: #0E2E34;
+  --tag-required-text: #3ABBC8;
+  --tag-lab-bg: #2A2218;
+  --tag-lab-text: #C8A878;
+  --hufs-gray: #3A3A44;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.embed {
+  background: transparent;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.page-header {
+  background: var(--hufs-navy);
+  color: #FFFFFF;
+  padding: 28px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+body.embed .page-header {
+  position: relative;
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.header-title h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.header-title .subtitle {
+  font-size: 12px;
+  font-weight: 300;
+  opacity: 0.75;
+}
+
+.track-legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-dot.track-common { background: var(--hufs-green); }
+.legend-dot.track-system { background: var(--hufs-gold); }
+.legend-dot.track-data   { background: var(--hufs-data-blue); }
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.main-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+/* ============================================================
+   YEAR SECTION
+   ============================================================ */
+.year-section {
+  margin-bottom: 32px;
+}
+
+.year-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-left: 4px;
+}
+
+.year-badge {
+  background: var(--hufs-navy);
+  color: #FFF;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .year-badge {
+  background: #1E3A5C;
+}
+
+.year-line {
+  flex: 1;
+  height: 1px;
+  background: var(--hufs-gray);
+}
+
+.semester-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ============================================================
+   SEMESTER CARD
+   ============================================================ */
+.semester-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.semester-label {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   COURSE TABLE
+   ============================================================ */
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.course-row {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.course-row:last-child {
+  border-bottom: none;
+}
+
+.course-row:hover {
+  background: var(--row-hover);
+}
+
+.course-row td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+/* Track accent border */
+.course-row td:first-child {
+  width: 52px;
+  text-align: center;
+  position: relative;
+}
+
+.course-row td:first-child::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+}
+
+.course-row.track-common td:first-child::before { background: var(--hufs-green); }
+.course-row.track-system td:first-child::before { background: var(--hufs-gold); }
+.course-row.track-data   td:first-child::before { background: var(--hufs-data-blue); }
+
+/* Icon */
+.course-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--hufs-gray);
+  flex-shrink: 0;
+}
+
+/* Name cell */
+.td-name {
+  min-width: 0;
+}
+
+.course-name-kr {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  word-break: keep-all;
+}
+
+.course-name-en {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.3;
+  margin-top: 1px;
+  word-break: break-word;
+}
+
+/* Credits */
+.td-credits {
+  width: 52px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Tags */
+.td-tags {
+  width: 100px;
+  white-space: nowrap;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-right: 3px;
+  letter-spacing: 0.3px;
+}
+
+.tag-required {
+  background: var(--tag-required-bg);
+  color: var(--tag-required-text);
+}
+
+.tag-lab {
+  background: var(--tag-lab-bg);
+  color: var(--tag-lab-text);
+}
+
+/* Professor */
+.td-professor {
+  width: 100px;
+  font-size: 11.5px;
+  color: var(--hufs-silver);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.page-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.page-footer a {
+  color: var(--hufs-green);
+  text-decoration: none;
+}
+
+body.embed .page-footer {
+  display: none;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 20px 16px;
+  }
+
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .semester-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .td-professor {
+    display: none;
+  }
+
+  .td-tags {
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title h1 {
+    font-size: 16px;
+  }
+
+  .track-legend {
+    gap: 10px;
+  }
+
+  .td-credits {
+    width: 40px;
+  }
+
+  .course-name-en {
+    display: none;
+  }
+
+  .course-row td {
+    padding: 8px 8px;
+  }
+
+  .course-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .course-row td:first-child {
+    width: 40px;
+  }
+}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  .page-header {
+    position: relative;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .semester-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .course-row:hover {
+    background: none;
+  }
+
+  .year-section {
+    break-inside: avoid;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="page-header" id="page-header">
+  <div class="header-inner">
+    <div class="header-title">
+      <h1>바이오메디컬공학부 교육과정</h1>
+      <span class="subtitle">Department of Biomedical Engineering — Curriculum Overview</span>
+    </div>
+    <div class="track-legend">
+      <div class="legend-item"><span class="legend-dot track-common"></span>공통</div>
+      <div class="legend-item"><span class="legend-dot track-system"></span>시스템</div>
+      <div class="legend-item"><span class="legend-dot track-data"></span>데이터</div>
+      <div class="legend-item" style="margin-left:8px; opacity:0.7;">
+        <span class="tag tag-required" style="font-size:9px;">필수</span>
+        <span class="tag tag-lab" style="font-size:9px;">실습</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main class="main-content" id="main-content"></main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer">
+  한국외국어대학교 바이오메디컬공학부 &middot;
+  <a href="https://bme.hufs.ac.kr" target="_blank" rel="noopener">bme.hufs.ac.kr</a>
+</footer>
+
+<script>
+// ============================================================
+// COURSE DATA (49 courses from BME curriculum)
+// ============================================================
+const COURSES = [
+  // ---- Year 1, Semester 1 ----
+  { name:"AI공학개론", nameEn:"Introduction to Artificial Intelligence Engineering", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"남윤호 교수님" },
+  { name:"컴퓨터개론 및 실습", nameEn:"Introduction to Computer & Experiments", credits:3, year:1, semester:1, track:"공통", hasLab:true, majorRequired:false, professor:"김보형 교수님" },
+  { name:"기본미적분학1", nameEn:"Basic Calculus 1", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"일반화학", nameEn:"General Chemistry", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"일반생물학1", nameEn:"General Biology 1", credits:3, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"기초물리학1", nameEn:"Basic Physics 1", credits:2, year:1, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  // ---- Year 1, Semester 2 ----
+  { name:"디지털공학", nameEn:"Digital Engineering", credits:3, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"오세홍 교수님" },
+  { name:"컴퓨터프로그래밍 및 실습", nameEn:"Computer Programming & Lab", credits:3, year:1, semester:2, track:"공통", hasLab:true, majorRequired:true, professor:"김보형 교수님" },
+  { name:"기본미적분학2", nameEn:"Basic Calculus 2", credits:3, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"일반생물학2", nameEn:"General Biology 2", credits:3, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"기초물리학2", nameEn:"Basic Physics 2", credits:2, year:1, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  // ---- Year 2, Semester 1 ----
+  { name:"공업수학1", nameEn:"Engineering Mathematics 1", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:true, professor:"우명균 교수님" },
+  { name:"의용회로", nameEn:"BME Circuit Analysis & Laboratory", credits:3, year:2, semester:1, track:"공통", hasLab:true, majorRequired:true, professor:"오세홍 교수님" },
+  { name:"의용기계공학", nameEn:"Biomedical Mechanics", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:true, professor:"박준홍 교수님" },
+  { name:"객체지향프로그래밍", nameEn:"Object-Oriented Programming & Laboratory", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"김보형 교수님" },
+  { name:"바이오확률통계", nameEn:"Biomedical Probability & Statistics", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  { name:"미생물학", nameEn:"Microbiology", credits:3, year:2, semester:1, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  // ---- Year 2, Semester 2 ----
+  { name:"의용반도체 회로 및 실습", nameEn:"Biomedical Semiconductor Circuits and Experiment", credits:3, year:2, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"강교원 교수님" },
+  { name:"의용전자", nameEn:"BME Electronic Circuit Design & Laboratory", credits:3, year:2, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"오세홍 교수님" },
+  { name:"의용열유체", nameEn:"Biomedical Thermo-Fluid Mechanics", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
+  { name:"선형대수", nameEn:"Linear Algebra", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:true, professor:"남윤호 교수님" },
+  { name:"자료구조", nameEn:"Data Structure", credits:3, year:2, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"김보형 교수님" },
+  { name:"의학유전학 (의생명데이터프로그래밍)", nameEn:"Medical Genetics (Biomedical Data Programming)", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
+  { name:"생체구조생리학", nameEn:"Human Physiology", credits:3, year:2, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"" },
+  // ---- Year 3, Semester 1 ----
+  { name:"바이오메디컬 인공지능", nameEn:"Biomedical Artificial Intelligence", credits:3, year:3, semester:1, track:"데이터", hasLab:false, majorRequired:false, professor:"김모건 교수님" },
+  { name:"화학정보학", nameEn:"Cheminformatics", credits:3, year:3, semester:1, track:"데이터", hasLab:true, majorRequired:false, professor:"김모건 교수님" },
+  { name:"BME 신호 및 시스템", nameEn:"BME Signal and System", credits:3, year:3, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"오세홍 교수님" },
+  { name:"의료초음파입문", nameEn:"Introduction to Medical Ultrasound", credits:3, year:3, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
+  { name:"생명정보학을 위한 데이터마이닝", nameEn:"Data mining in Bioinformatics", credits:3, year:3, semester:1, track:"데이터", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
+  { name:"의용반도체 공정 및 실습", nameEn:"Biomedical Semiconductor Fabrication and Experiment", credits:3, year:3, semester:1, track:"시스템", hasLab:true, majorRequired:false, professor:"강교원 교수님" },
+  { name:"웨어러블/임플란터블 디바이스특론", nameEn:"Special topics on wearable/implantable devcies", credits:3, year:3, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"강교원 교수님" },
+  // ---- Year 3, Semester 2 ----
+  { name:"의생명 자연어처리", nameEn:"Biomedical Natural Language Processing", credits:3, year:3, semester:2, track:"데이터", hasLab:true, majorRequired:false, professor:"김모건 교수님" },
+  { name:"RF 및 Wireless 시스템", nameEn:"RF and Wireless System", credits:3, year:3, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
+  { name:"생체전자기학", nameEn:"Bioelectromagnetism", credits:3, year:3, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
+  { name:"BME 캡스톤기초", nameEn:"Lab for BME Basic Capstone", credits:1, year:3, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"우명균 교수님" },
+  { name:"바이오메디컬공학 최신경향과 창의설계", nameEn:"Trends in Biomedical Engineering and Creative Design", credits:3, year:3, semester:2, track:"공통", hasLab:true, majorRequired:false, professor:"우명균 교수님" },
+  { name:"의료영상물리학", nameEn:"The Physics of Medical Imaging", credits:3, year:3, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
+  { name:"의료영상처리이론 및 실습", nameEn:"Medical Image Processing & Laboratory", credits:3, year:3, semester:2, track:"시스템", hasLab:true, majorRequired:false, professor:"남윤호 교수님" },
+  { name:"의생명정보학", nameEn:"Bioinformatics", credits:3, year:3, semester:2, track:"데이터", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
+  { name:"바이오메디컬 회로 설계 및 실험", nameEn:"Biomedical circuit design and experiments", credits:3, year:3, semester:2, track:"시스템", hasLab:true, majorRequired:false, professor:"강교원 교수님" },
+  // ---- Year 4, Semester 1 ----
+  { name:"BME 캡스톤디자인실습", nameEn:"Lab for BME Capstone Design", credits:3, year:4, semester:1, track:"공통", hasLab:true, majorRequired:false, professor:"학부장 교수님" },
+  { name:"안테나공학이론", nameEn:"Antenna Engineering Theory", credits:3, year:4, semester:1, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
+  { name:"고급의료영상처리 및 실습", nameEn:"Advanced Medical Image Processing & Laboratory", credits:3, year:4, semester:1, track:"시스템", hasLab:true, majorRequired:false, professor:"남윤호 교수님" },
+  // ---- Year 4, Semester 2 ----
+  { name:"신약개발", nameEn:"Drug Discovery", credits:3, year:4, semester:2, track:"데이터", hasLab:true, majorRequired:false, professor:"김모건 교수님" },
+  { name:"MRI이론", nameEn:"Magnetic Resonance Imaging Theory", credits:3, year:4, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"우명균 교수님" },
+  { name:"바이오음향공학", nameEn:"Bioacoustic Engineering", credits:3, year:4, semester:2, track:"시스템", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
+  { name:"바이오메디컬공학특강", nameEn:"Special Lectures on Biomedical Engineering Seminar", credits:2, year:4, semester:2, track:"공통", hasLab:false, majorRequired:false, professor:"박준홍 교수님" },
+  { name:"데이터시각화 및 실습", nameEn:"Data Visualization & Laboratory", credits:3, year:4, semester:2, track:"데이터", hasLab:true, majorRequired:false, professor:"김보형 교수님" },
+  { name:"의생명데이터분석", nameEn:"NGS Data Analysis", credits:3, year:4, semester:2, track:"데이터", hasLab:false, majorRequired:false, professor:"고윤희 교수님" },
+];
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function getIconPath(name) {
+  const fn = name.replace(/\//g, '_');
+  return 'course_icons/' + encodeURIComponent(fn) + '.png';
+}
+
+function trackClass(track) {
+  if (track === '시스템') return 'track-system';
+  if (track === '데이터') return 'track-data';
+  return 'track-common';
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderCourseRow(c) {
+  const tags = [];
+  if (c.majorRequired) tags.push('<span class="tag tag-required">필수</span>');
+  if (c.hasLab) tags.push('<span class="tag tag-lab">실습</span>');
+
+  return `<tr class="course-row ${trackClass(c.track)}">
+    <td><img class="course-icon" src="${getIconPath(c.name)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"></td>
+    <td class="td-name">
+      <div class="course-name-kr">${escapeHtml(c.name)}</div>
+      <div class="course-name-en">${escapeHtml(c.nameEn)}</div>
+    </td>
+    <td class="td-credits">${c.credits}학점</td>
+    <td class="td-tags">${tags.join('')}</td>
+    <td class="td-professor">${c.professor ? escapeHtml(c.professor) : ''}</td>
+  </tr>`;
+}
+
+function renderSemester(courses, label) {
+  if (courses.length === 0) return '';
+  const rows = courses.map(renderCourseRow).join('');
+  return `<div class="semester-card">
+    <div class="semester-label">${label}</div>
+    <table class="course-table"><tbody>${rows}</tbody></table>
+  </div>`;
+}
+
+function renderYear(year, courses) {
+  const s1 = courses.filter(c => c.semester === 1);
+  const s2 = courses.filter(c => c.semester === 2);
+
+  return `<section class="year-section">
+    <div class="year-header">
+      <span class="year-badge">${year}학년</span>
+      <div class="year-line"></div>
+    </div>
+    <div class="semester-grid">
+      ${renderSemester(s1, '1학기')}
+      ${renderSemester(s2, '2학기')}
+    </div>
+  </section>`;
+}
+
+function render() {
+  const main = document.getElementById('main-content');
+  let html = '';
+  for (let y = 1; y <= 4; y++) {
+    const yearCourses = COURSES.filter(c => c.year === y);
+    if (yearCourses.length > 0) {
+      html += renderYear(y, yearCourses);
+    }
+  }
+  main.innerHTML = html;
+}
+
+// ============================================================
+// QUERY PARAMS: ?embed=true, ?theme=dark
+// ============================================================
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('embed') === 'true') {
+    document.body.classList.add('embed');
+  }
+
+  if (params.get('theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
