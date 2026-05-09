@@ -70,7 +70,7 @@ body.embed {
 .page-header {
   background: var(--hufs-navy);
   color: #FFFFFF;
-  padding: 28px 32px;
+  padding: 24px 32px 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -135,6 +135,40 @@ body.embed .page-header {
 .legend-dot.track-data   { background: var(--hufs-data-blue); }
 
 /* ============================================================
+   YEAR TABS
+   ============================================================ */
+.year-tabs {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  padding-top: 16px;
+}
+
+.year-tab {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.55);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 24px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.year-tab:hover {
+  color: rgba(255,255,255,0.85);
+}
+
+.year-tab.active {
+  color: #FFFFFF;
+  border-bottom-color: var(--hufs-green);
+  font-weight: 700;
+}
+
+/* ============================================================
    MAIN LAYOUT
    ============================================================ */
 .main-content {
@@ -147,35 +181,11 @@ body.embed .page-header {
    YEAR SECTION
    ============================================================ */
 .year-section {
-  margin-bottom: 32px;
+  display: none;
 }
 
-.year-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-  padding-left: 4px;
-}
-
-.year-badge {
-  background: var(--hufs-navy);
-  color: #FFF;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 4px 14px;
-  border-radius: 20px;
-  letter-spacing: 0.5px;
-}
-
-[data-theme="dark"] .year-badge {
-  background: #1E3A5C;
-}
-
-.year-line {
-  flex: 1;
-  height: 1px;
-  background: var(--hufs-gray);
+.year-section.active {
+  display: block;
 }
 
 .semester-grid {
@@ -350,7 +360,7 @@ body.embed .page-footer {
    ============================================================ */
 @media (max-width: 768px) {
   .page-header {
-    padding: 20px 16px;
+    padding: 20px 16px 0;
   }
 
   .header-inner {
@@ -368,6 +378,11 @@ body.embed .page-footer {
 
   .td-tags {
     width: auto;
+  }
+
+  .year-tab {
+    padding: 10px 16px;
+    font-size: 13px;
   }
 }
 
@@ -400,6 +415,11 @@ body.embed .page-footer {
   .course-row td:first-child {
     width: 40px;
   }
+
+  .year-tab {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }
 
 /* ============================================================
@@ -421,7 +441,22 @@ body.embed .page-footer {
   }
 
   .year-section {
+    display: block !important;
     break-inside: avoid;
+    margin-bottom: 24px;
+  }
+
+  .year-section::before {
+    content: attr(data-year-label);
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--hufs-navy);
+    margin-bottom: 8px;
+  }
+
+  .year-tabs {
+    display: none;
   }
 }
 </style>
@@ -445,6 +480,7 @@ body.embed .page-footer {
       </div>
     </div>
   </div>
+  <nav class="year-tabs" id="year-tabs"></nav>
 </header>
 
 <!-- ===== MAIN ===== -->
@@ -569,30 +605,40 @@ function renderSemester(courses, label) {
   </div>`;
 }
 
-function renderYear(year, courses) {
-  const s1 = courses.filter(c => c.semester === 1);
-  const s2 = courses.filter(c => c.semester === 2);
+let activeYear = 1;
 
-  return `<section class="year-section">
-    <div class="year-header">
-      <span class="year-badge">${year}학년</span>
-      <div class="year-line"></div>
-    </div>
-    <div class="semester-grid">
-      ${renderSemester(s1, '1학기')}
-      ${renderSemester(s2, '2학기')}
-    </div>
-  </section>`;
+function switchYear(year) {
+  activeYear = year;
+  document.querySelectorAll('.year-section').forEach(el => {
+    el.classList.toggle('active', el.dataset.year === String(year));
+  });
+  document.querySelectorAll('.year-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.year === String(year));
+  });
 }
 
 function render() {
+  // Tabs
+  const tabsNav = document.getElementById('year-tabs');
+  let tabsHtml = '';
+  for (let y = 1; y <= 4; y++) {
+    tabsHtml += `<button class="year-tab${y === 1 ? ' active' : ''}" data-year="${y}" onclick="switchYear(${y})">${y}학년</button>`;
+  }
+  tabsNav.innerHTML = tabsHtml;
+
+  // Year sections
   const main = document.getElementById('main-content');
   let html = '';
   for (let y = 1; y <= 4; y++) {
     const yearCourses = COURSES.filter(c => c.year === y);
-    if (yearCourses.length > 0) {
-      html += renderYear(y, yearCourses);
-    }
+    const s1 = yearCourses.filter(c => c.semester === 1);
+    const s2 = yearCourses.filter(c => c.semester === 2);
+    html += `<section class="year-section${y === 1 ? ' active' : ''}" data-year="${y}" data-year-label="${y}학년">
+      <div class="semester-grid">
+        ${renderSemester(s1, '1학기')}
+        ${renderSemester(s2, '2학기')}
+      </div>
+    </section>`;
   }
   main.innerHTML = html;
 }
@@ -603,7 +649,7 @@ function render() {
 (function init() {
   const params = new URLSearchParams(window.location.search);
 
-  if (params.get('embed') === 'true') {
+  if (params.get('embed') === 'true' || window.parent !== window) {
     document.body.classList.add('embed');
   }
 
