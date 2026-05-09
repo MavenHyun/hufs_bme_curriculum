@@ -223,7 +223,7 @@ body.embed .page-header {
 
 .course-row {
   border-bottom: 1px solid var(--border);
-  transition: background 0.15s;
+  transition: background 0.15s, filter 0.15s;
 }
 
 .course-row:last-child {
@@ -231,13 +231,63 @@ body.embed .page-header {
 }
 
 .course-row:hover {
-  background: var(--row-hover);
+  filter: brightness(0.95);
 }
 
 .course-row td {
   padding: 10px 12px;
   vertical-align: middle;
 }
+
+/* Track background colors */
+.course-row.track-common {
+  background: #E1F0F2;
+}
+.course-row.track-common .course-name-kr { color: #0C4A52; }
+.course-row.track-common .course-name-en { color: #3A7A82; }
+.course-row.track-common .td-credits { color: #0C4A52; }
+.course-row.track-common .td-professor { color: #4A8A90; }
+
+.course-row.track-system {
+  background: #F0E8DE;
+}
+.course-row.track-system .course-name-kr { color: #5A4430; }
+.course-row.track-system .course-name-en { color: #8A7050; }
+.course-row.track-system .td-credits { color: #5A4430; }
+.course-row.track-system .td-professor { color: #8A7050; }
+
+.course-row.track-data {
+  background: #E0EBF4;
+}
+.course-row.track-data .course-name-kr { color: #1A4670; }
+.course-row.track-data .course-name-en { color: #4A7AA6; }
+.course-row.track-data .td-credits { color: #1A4670; }
+.course-row.track-data .td-professor { color: #4A7AA6; }
+
+/* Dark mode track backgrounds */
+[data-theme="dark"] .course-row.track-common {
+  background: #0E2E34;
+}
+[data-theme="dark"] .course-row.track-common .course-name-kr { color: #8ECDD4; }
+[data-theme="dark"] .course-row.track-common .course-name-en { color: #5A9DA4; }
+[data-theme="dark"] .course-row.track-common .td-credits { color: #8ECDD4; }
+[data-theme="dark"] .course-row.track-common .td-professor { color: #5A9DA4; }
+
+[data-theme="dark"] .course-row.track-system {
+  background: #2A2218;
+}
+[data-theme="dark"] .course-row.track-system .course-name-kr { color: #D4B88A; }
+[data-theme="dark"] .course-row.track-system .course-name-en { color: #A08A60; }
+[data-theme="dark"] .course-row.track-system .td-credits { color: #D4B88A; }
+[data-theme="dark"] .course-row.track-system .td-professor { color: #A08A60; }
+
+[data-theme="dark"] .course-row.track-data {
+  background: #142840;
+}
+[data-theme="dark"] .course-row.track-data .course-name-kr { color: #8AB8E0; }
+[data-theme="dark"] .course-row.track-data .course-name-en { color: #5A8AB8; }
+[data-theme="dark"] .course-row.track-data .td-credits { color: #8AB8E0; }
+[data-theme="dark"] .course-row.track-data .td-professor { color: #5A8AB8; }
 
 /* Track accent border */
 .course-row td:first-child {
