@@ -1386,13 +1386,23 @@ function init() {
 init();
 
 // ============================================================
-// LIGHT-MODE SUPPORT (for embedding in legacy site)
+// EMBED & LIGHT-MODE SUPPORT
 // ============================================================
-// Detect if embedded via ?theme=light or parent page preference
 (function() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('theme') === 'light') {
     document.body.classList.add('light-mode');
+  }
+  // Embed mode: remove sticky header, viewport constraints, and report height
+  if (params.has('embed') || window.parent !== window) {
+    document.body.classList.add('embed-mode');
+    function reportHeight() {
+      const h = document.documentElement.scrollHeight;
+      window.parent.postMessage({ type: 'bme-resize', height: h }, '*');
+    }
+    // Report after render and on every resize
+    requestAnimationFrame(() => requestAnimationFrame(reportHeight));
+    new ResizeObserver(reportHeight).observe(document.body);
   }
 })();
 </script>
@@ -1513,84 +1523,47 @@ body.light-mode .btn-toggle-lines.active {
   border-color: rgba(139,105,20,0.3);
 }
 
-/* Remove min-height when embedded */
-body.embedded { min-height: auto; }
+/* ===== EMBED MODE — no internal scroll ===== */
+body.embed-mode {
+  min-height: auto;
+  height: auto;
+  overflow: visible;
+}
+body.embed-mode .header {
+  position: relative;    /* disable sticky */
+}
+body.embed-mode .main-container {
+  padding-bottom: 24px;  /* reduce bottom padding */
+}
 </style>
 
 <!--
 ============================================================
- EMBEDDING GUIDE — How to replace legacy curriculum page
+ EMBEDDING GUIDE
 ============================================================
 
-OPTION 1: iframe Embed (Recommended)
-────────────────────────────────────
-Host this file on a web server (GitHub Pages, university server, etc.)
-and replace the legacy <div class="objTag"> content with:
+CMS embed code (paste into the university site editor):
 
-<div class="objTag">
-  <div style="position:relative;width:100%;padding:0;">
-    <iframe
-      src="https://YOUR_HOST/bme_curriculum_v00.html?theme=light"
-      style="width:100%;min-height:900px;border:none;border-radius:12px;"
-      title="BME 전공 로드맵 - 인터랙티브 커리큘럼 빌더"
-      loading="lazy">
-    </iframe>
-  </div>
-</div>
+<iframe id="bme-curriculum"
+  src="https://YOUR_HOST/path/?theme=light&embed=true"
+  style="width:100%;border:none;overflow:hidden;"
+  scrolling="no"
+  title="BME 전공 로드맵">
+</iframe>
+<script>
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.type==='bme-resize')
+    document.getElementById('bme-curriculum').style.height=e.data.height+'px';
+});
+</script>
 
-Notes:
-- Use ?theme=light to match the white-background CMS site
-- Omit ?theme=light to keep the dark theme
-- Adjust min-height as needed (900px–1200px typical)
-- The iframe auto-resizes content internally
+If the CMS strips <script> tags, use a fixed height instead:
 
-OPTION 2: JavaScript Auto-Resize iframe
-────────────────────────────────────────
-For seamless height matching:
-
-<div class="objTag">
-  <iframe id="bme-curriculum" src="https://YOUR_HOST/bme_curriculum_v00.html?theme=light"
-    style="width:100%;border:none;border-radius:12px;overflow:hidden;"
-    title="BME 전공 로드맵" loading="lazy"></iframe>
-  <script>
-    window.addEventListener('message', function(e) {
-      if (e.data && e.data.type === 'bme-resize') {
-        document.getElementById('bme-curriculum').style.height = e.data.height + 'px';
-      }
-    });
-  </script>
-</div>
-
-Then add this inside bme_curriculum_v00.html's init() function:
-  // Post height to parent for auto-resize
-  function postHeight() {
-    if (window.parent !== window) {
-      window.parent.postMessage({
-        type: 'bme-resize',
-        height: document.body.scrollHeight
-      }, '*');
-    }
-  }
-  new ResizeObserver(postHeight).observe(document.body);
-
-OPTION 3: Hybrid — Keep Legacy Table + Link to Interactive
-──────────────────────────────────────────────────────────
-Keep the original table for reference and add a link/button:
-
-<div class="objTag">
-  <div style="text-align:center;margin:20px 0;">
-    <a href="https://YOUR_HOST/bme_curriculum_v00.html"
-       target="_blank"
-       style="display:inline-block;padding:12px 28px;background:#002D56;
-              color:#fff;border-radius:8px;text-decoration:none;
-              font-weight:600;font-size:14px;">
-      인터랙티브 전공 로드맵 열기 →
-    </a>
-  </div>
-  <div class="con-table mt30">
-    ... existing table HTML ...
-  </div>
-</div>
+<iframe src="https://YOUR_HOST/path/?theme=light&embed=true"
+  style="width:100%;height:4000px;border:none;overflow:hidden;"
+  scrolling="no"
+  title="BME 전공 로드맵">
+</iframe>
 ============================================================
 -->
 </body>
